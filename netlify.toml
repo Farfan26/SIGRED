@@ -1,0 +1,3 @@
+# Netlify: sitio estático, sin build. Arrastra esta carpeta a app.netlify.com/drop
+[build]
+  publish = "."

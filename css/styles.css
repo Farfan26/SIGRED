@@ -1,0 +1,20 @@
+/* Estilos SIGRED: azul principal y semáforo para el calendario (sección 5.5.1) */
+:root{--azul:#2c5697;--azul-o:#1f3864;--libre:#c6e0b4;--ocup:#f4b6b6;--pend:#ffe699;--bloq:#bfbfbf}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,Arial,sans-serif;background:#f2f2f2;color:#222}
+.card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:24px}
+.login-wrap{display:flex;justify-content:center;padding:40px 12px}
+.login{width:100%;max-width:400px;text-align:center}.login h1{color:var(--azul);margin:8px 0 0}
+.sub{color:#666}label{display:block;text-align:left;margin:12px 0;color:#555;font-size:14px}
+input,select{width:100%;padding:10px;border:1.5px solid #aaa;border-radius:8px;font-size:15px;margin-top:4px}
+.btn{background:var(--azul);color:#fff;border:0;border-radius:8px;padding:11px 18px;font-size:15px;font-weight:bold;cursor:pointer}
+.btn.sec{background:#888}.btn.rojo{background:#b33}.btn:hover{opacity:.9}.login .btn{width:100%}
+.error{color:#b33;min-height:18px}.demo{font-size:13px;color:#555;margin-top:14px}
+.nav{background:var(--azul);color:#fff;display:flex;gap:10px;align-items:center;padding:0 18px;flex-wrap:wrap}
+.nav a,.nav b{color:#fff;text-decoration:none;padding:16px 12px}.nav a.on{background:var(--azul-o)}
+#quien{margin-left:auto;font-size:14px}main{padding:18px;max-width:1000px;margin:auto}
+.fila{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:14px}.fila label{margin:0;flex:1;min-width:150px}
+table{border-collapse:collapse;width:100%;background:#fff}th,td{border:1px solid #ddd;padding:8px;font-size:14px;text-align:center}
+td.s{font-size:13px}.Libre{background:var(--libre);cursor:pointer}.Ocupado{background:var(--ocup)}
+.Pendiente{background:var(--pend)}.Bloqueado{background:var(--bloq)}.leyenda span{padding:3px 10px;margin-right:8px;border-radius:4px;font-size:13px}
+dialog{border:0;border-radius:12px;padding:22px;max-width:480px;width:94%}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:8px;display:none}
