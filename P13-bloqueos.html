@@ -1,21 +1,24 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SIGRED · P13-bloqueos</title>
-<link rel="stylesheet" href="assets/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SIGRED · P13-bloqueos</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/png" href="SIGRED\assets\lsigred.png">
 </head>
+
 <body>
 
-<div id="root"></div>
+    <div id="root"></div>
 
-<script src="assets/app.js"></script>
-<script>
-if(!requireAuth(true)){} else {
-shell("Bloqueos de horario","P13",`
+    <script src="assets/app.js"></script>
+    <script>
+        if (!requireAuth(true)) { } else {
+            shell("Bloqueos de horario", "P13", `
 <div class="grid grid-2"><div class="card"><h3>Registrar bloqueo</h3><form id="blockForm"><div class="form-grid">
-<div class="field full"><label>Espacio</label><select id="space">${SIGRED.spaces.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></div>
+<div class="field full"><label>Espacio</label><select id="space">${SIGRED.spaces.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></div>
 <div class="field"><label>Fecha</label><input id="date" type="date" value="${todayISO()}" required></div>
 <div class="field"><label>Tipo</label><select id="type"><option>MANTENIMIENTO</option><option>ACTIVIDAD_INSTITUCIONAL</option><option>OTRO</option></select></div>
 <div class="field"><label>Hora de inicio</label><input id="start" type="time" value="08:00" required></div>
@@ -23,10 +26,11 @@ shell("Bloqueos de horario","P13",`
 <div class="field full"><label>Motivo</label><input id="reason" maxlength="200"></div>
 </div><button class="btn" style="margin-top:15px">Registrar bloqueo</button></form></div>
 <div class="card"><h3>Bloqueos registrados</h3><div id="list"></div></div></div>`);
-function render(){qs("#list").innerHTML=SIGRED.blocks.length?`<div class="table-wrap"><table><thead><tr><th>Espacio</th><th>Fecha</th><th>Horario</th><th>Tipo</th><th>Motivo</th><th></th></tr></thead><tbody>${SIGRED.blocks.map(b=>`<tr><td>${esc(getSpace(b.spaceId).name)}</td><td>${formatDate(b.date)}</td><td>${b.start} – ${b.end}</td><td>${esc(b.type)}</td><td>${esc(b.reason||"")}</td><td><button class="btn danger small" onclick="removeBlock(${b.id})">Eliminar</button></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">No hay bloqueos registrados.</div>`}
-window.removeBlock=id=>{SIGRED.blocks=SIGRED.blocks.filter(b=>b.id!==id);saveData();render();toast("Bloqueo eliminado")};
-qs("#blockForm").onsubmit=e=>{e.preventDefault();const b={id:uid(),spaceId:+qs("#space").value,date:qs("#date").value,start:qs("#start").value,end:qs("#end").value,type:qs("#type").value,reason:qs("#reason").value};if(b.start>=b.end){alert("La hora de fin debe ser posterior.");return}SIGRED.blocks.push(b);saveData();render();e.target.reset();qs("#date").value=todayISO();toast("Bloqueo registrado")};render();
-}
-</script>
+            function render() { qs("#list").innerHTML = SIGRED.blocks.length ? `<div class="table-wrap"><table><thead><tr><th>Espacio</th><th>Fecha</th><th>Horario</th><th>Tipo</th><th>Motivo</th><th></th></tr></thead><tbody>${SIGRED.blocks.map(b => `<tr><td>${esc(getSpace(b.spaceId).name)}</td><td>${formatDate(b.date)}</td><td>${b.start} – ${b.end}</td><td>${esc(b.type)}</td><td>${esc(b.reason || "")}</td><td><button class="btn danger small" onclick="removeBlock(${b.id})">Eliminar</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="empty">No hay bloqueos registrados.</div>` }
+            window.removeBlock = id => { SIGRED.blocks = SIGRED.blocks.filter(b => b.id !== id); saveData(); render(); toast("Bloqueo eliminado") };
+            qs("#blockForm").onsubmit = e => { e.preventDefault(); const b = { id: uid(), spaceId: +qs("#space").value, date: qs("#date").value, start: qs("#start").value, end: qs("#end").value, type: qs("#type").value, reason: qs("#reason").value }; if (b.start >= b.end) { alert("La hora de fin debe ser posterior."); return } SIGRED.blocks.push(b); saveData(); render(); e.target.reset(); qs("#date").value = todayISO(); toast("Bloqueo registrado") }; render();
+        }
+    </script>
 </body>
+
 </html>

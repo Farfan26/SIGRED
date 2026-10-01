@@ -1,28 +1,32 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SIGRED · P07-mis-reservas</title>
-<link rel="stylesheet" href="assets/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SIGRED · P07-mis-reservas</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/png" href="SIGRED\assets\lsigred.png">
 </head>
+
 <body>
 
-<div id="root"></div>
+    <div id="root"></div>
 
-<script src="assets/app.js"></script>
-<script>
-if(!requireAuth()){} else {
-shell("Mis reservas","P07",`
+    <script src="assets/app.js"></script>
+    <script>
+        if (!requireAuth()) { } else {
+            shell("Mis reservas", "P07", `
 <div class="card"><h3>Próximas</h3><div id="upcoming"></div></div>
 <div class="card" style="margin-top:18px"><h3>Historial</h3><div id="history"></div></div>`);
-function row(r){return `<tr><td>${formatDate(r.date)}</td><td>${esc(getSpace(r.spaceId).name)}</td><td>${esc(r.discipline)}</td><td>${r.start} – ${r.end}</td><td>${statusBadge(r.state)}</td><td><button class="btn secondary small" onclick="location.href='P08-detalle.html?id=${r.id}'">Ver detalle</button></td></tr>`}
-const mine=SIGRED.reservations.filter(r=>r.user===SIGRED.current.email);
-const up=mine.filter(r=>["PENDIENTE","CONFIRMADA"].includes(r.state)&&r.date>=todayISO());
-const hi=mine.filter(r=>!up.includes(r));
-qs("#upcoming").innerHTML=up.length?`<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Espacio</th><th>Disciplina</th><th>Horario</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${up.map(row).join("")}</tbody></table></div>`:`<div class="empty">No tienes reservas próximas.</div>`;
-qs("#history").innerHTML=hi.length?`<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Espacio</th><th>Disciplina</th><th>Horario</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${hi.map(row).join("")}</tbody></table></div>`:`<div class="empty">No hay historial.</div>`;
-}
-</script>
+            function row(r) { return `<tr><td>${formatDate(r.date)}</td><td>${esc(getSpace(r.spaceId).name)}</td><td>${esc(r.discipline)}</td><td>${r.start} – ${r.end}</td><td>${statusBadge(r.state)}</td><td><button class="btn secondary small" onclick="location.href='P08-detalle.html?id=${r.id}'">Ver detalle</button></td></tr>` }
+            const mine = SIGRED.reservations.filter(r => r.user === SIGRED.current.email);
+            const up = mine.filter(r => ["PENDIENTE", "CONFIRMADA"].includes(r.state) && r.date >= todayISO());
+            const hi = mine.filter(r => !up.includes(r));
+            qs("#upcoming").innerHTML = up.length ? `<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Espacio</th><th>Disciplina</th><th>Horario</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${up.map(row).join("")}</tbody></table></div>` : `<div class="empty">No tienes reservas próximas.</div>`;
+            qs("#history").innerHTML = hi.length ? `<div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Espacio</th><th>Disciplina</th><th>Horario</th><th>Estado</th><th>Acción</th></tr></thead><tbody>${hi.map(row).join("")}</tbody></table></div>` : `<div class="empty">No hay historial.</div>`;
+        }
+    </script>
 </body>
+
 </html>

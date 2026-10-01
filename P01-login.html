@@ -1,45 +1,46 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SIGRED · P01-login</title>
-<link rel="stylesheet" href="assets/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIGRED · P01-login</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/png" href="SIGRED\assets\lsigred.png">
 </head>
+
 <body>
 
-<div class="login-page">
-  <section class="login-card">
-    <img class="login-logo" src="assets/logo-udep.png" alt="Logo Universidad de Piura">
-    <h1 class="login-title">SIGRED</h1>
-    <div class="login-sub">Gestión y Reserva de Espacios Deportivos</div>
-    <form id="loginForm">
-      <div class="field"><label>Correo institucional</label><input id="email" type="email" placeholder="usuario@udep.edu.pe" required></div>
-      <div class="field"><label>Contraseña</label><input id="password" type="password" placeholder="••••••••" required></div>
-      <button class="btn" type="submit">Ingresar</button>
-    </form>
-    <div class="login-links"><a href="P02-recuperar.html">¿Olvidó su contraseña?</a></div>
-    <div class="demo-box">
-      <strong>Modo demostración:</strong><br>
-      estudiante@udep.edu.pe / 123456<br>
-      docente@udep.edu.pe / 123456<br>
-      admin@udep.edu.pe / admin123
-    </div>
-  </section>
-</div>
+  <div class="login-page">
+    <section class="login-card">
+      <img class="login-logo" src="assets/logo-udep.png" alt="Logo Universidad de Piura">
+      <h1 class="login-title">SIGRED</h1>
+      <div class="login-sub">Gestión y Reserva de Espacios Deportivos</div>
+      <form id="loginForm">
+        <div class="field"><label>Correo institucional</label><input id="email" type="email"
+            placeholder="usuario@udep.edu.pe" required></div>
+        <div class="field"><label>Contraseña</label><input id="password" type="password" placeholder="••••••••"
+            required></div>
+        <button class="btn" type="submit">Ingresar</button>
+      </form>
+      <div class="login-links"><a href="P02-recuperar.html">¿Olvidó su contraseña?</a></div>
 
-<script src="assets/app.js"></script>
-<script>
-const f=qs("#loginForm");
-f.addEventListener("submit",e=>{
-  e.preventDefault();
-  const email=qs("#email").value.trim().toLowerCase(), pass=qs("#password").value;
-  const u=SIGRED.demoUsers[email];
-  if(!u || u.password!==pass){toast("Credenciales no válidas");return}
-  SIGRED.current={...u,email};
-  saveUser();
-  location.href=u.role==="ADMIN_DEPORTES"?"P10-admin.html":"P03-disponibilidad.html";
-});
-</script>
+    </section>
+  </div>
+
+  <script src="assets/app.js"></script>
+  <script>
+    const f = qs("#loginForm");
+    f.addEventListener("submit", e => {
+      e.preventDefault();
+      const email = qs("#email").value.trim().toLowerCase(), pass = qs("#password").value;
+      const u = SIGRED.demoUsers[email];
+      if (!u || u.password !== pass) { toast("Credenciales no válidas"); return }
+      SIGRED.current = { ...u, email };
+      saveUser();
+      location.href = u.role === "ADMIN_DEPORTES" ? "P10-admin.html" : "P03-disponibilidad.html";
+    });
+  </script>
 </body>
+
 </html>

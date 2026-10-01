@@ -1,22 +1,25 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SIGRED · P08-detalle</title>
-<link rel="stylesheet" href="assets/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SIGRED · P08-detalle</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/png" href="SIGRED\assets\lsigred.png">
 </head>
+
 <body>
 
-<div id="root"></div>
+    <div id="root"></div>
 
-<script src="assets/app.js"></script>
-<script>
-if(!requireAuth()){} else {
-const id=new URLSearchParams(location.search).get("id"),r=SIGRED.reservations.find(x=>String(x.id)===String(id));
-if(!r || (r.user!==SIGRED.current.email && SIGRED.current.role!=="ADMIN_DEPORTES")){shell("Detalle y cancelación","P07",`<div class="card empty">Reserva no encontrada.</div>`)}
-else{
-shell("Detalle y cancelación","P07",`
+    <script src="assets/app.js"></script>
+    <script>
+        if (!requireAuth()) { } else {
+            const id = new URLSearchParams(location.search).get("id"), r = SIGRED.reservations.find(x => String(x.id) === String(id));
+            if (!r || (r.user !== SIGRED.current.email && SIGRED.current.role !== "ADMIN_DEPORTES")) { shell("Detalle y cancelación", "P07", `<div class="card empty">Reserva no encontrada.</div>`) }
+            else {
+                shell("Detalle y cancelación", "P07", `
 <div class="card"><dl class="detail-list">
 <dt>Espacio</dt><dd>${esc(getSpace(r.spaceId).name)}</dd>
 <dt>Fecha</dt><dd>${formatDate(r.date)}</dd>
@@ -25,13 +28,14 @@ shell("Detalle y cancelación","P07",`
 <dt>Participantes</dt><dd>${r.participants}</dd>
 <dt>Finalidad</dt><dd>${esc(r.purpose)}</dd>
 <dt>Estado</dt><dd>${statusBadge(r.state)}</dd>
-<dt>Observación</dt><dd>${esc(r.observation||"—")}</dd>
+<dt>Observación</dt><dd>${esc(r.observation || "—")}</dd>
 </dl>
-<div class="actions" style="margin-top:22px">${["PENDIENTE","CONFIRMADA"].includes(r.state)&&r.date>=todayISO()?`<button class="btn danger" id="cancel">Cancelar reserva</button>`:""}<button class="btn secondary" onclick="location.href='P07-mis-reservas.html'">Volver</button></div>
+<div class="actions" style="margin-top:22px">${["PENDIENTE", "CONFIRMADA"].includes(r.state) && r.date >= todayISO() ? `<button class="btn danger" id="cancel">Cancelar reserva</button>` : ""}<button class="btn secondary" onclick="location.href='P07-mis-reservas.html'">Volver</button></div>
 </div>`);
-const c=qs("#cancel"); if(c)c.onclick=()=>{if(confirm("¿Cancelar esta reserva?")){r.state="CANCELADA";saveData();toast("Reserva cancelada");setTimeout(()=>location.reload(),500)}}
-}
-}
-</script>
+                const c = qs("#cancel"); if (c) c.onclick = () => { if (confirm("¿Cancelar esta reserva?")) { r.state = "CANCELADA"; saveData(); toast("Reserva cancelada"); setTimeout(() => location.reload(), 500) } }
+            }
+        }
+    </script>
 </body>
+
 </html>

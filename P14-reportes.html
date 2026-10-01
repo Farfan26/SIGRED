@@ -1,34 +1,38 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SIGRED · P14-reportes</title>
-<link rel="stylesheet" href="assets/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SIGRED · P14-reportes</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" type="image/png" href="SIGRED\assets\lsigred.png">
 </head>
+
 <body>
 
-<div id="root"></div>
+    <div id="root"></div>
 
-<script src="assets/app.js"></script>
-<script>
-if(!requireAuth(true)){} else {
-shell("Historial y reportes","P14",`
-<div class="toolbar"><div class="field compact"><label>Desde</label><input id="from" type="date" value="${addDays(todayISO(),-30)}"></div><div class="field compact"><label>Hasta</label><input id="to" type="date" value="${todayISO()}"></div><button class="btn" id="filter">Consultar</button></div>
+    <script src="assets/app.js"></script>
+    <script>
+        if (!requireAuth(true)) { } else {
+            shell("Historial y reportes", "P14", `
+<div class="toolbar"><div class="field compact"><label>Desde</label><input id="from" type="date" value="${addDays(todayISO(), -30)}"></div><div class="field compact"><label>Hasta</label><input id="to" type="date" value="${todayISO()}"></div><button class="btn" id="filter">Consultar</button></div>
 <div class="grid grid-4" id="kpis"></div>
 <div class="card" style="margin-top:18px"><h3>Reporte de uso por espacio</h3><div class="table-wrap"><table><thead><tr><th>Espacio</th><th>Solicitudes</th><th>Confirmadas</th><th>Rechazadas</th><th>Canceladas</th><th>Horas confirmadas</th></tr></thead><tbody id="report"></tbody></table></div></div>
 <div class="card" style="margin-top:18px"><h3>Historial reciente</h3><div class="table-wrap"><table><thead><tr><th>Reserva</th><th>Espacio</th><th>Usuario</th><th>Fecha</th><th>Estado</th></tr></thead><tbody id="hist"></tbody></table></div></div>`);
-function run(){
- const from=qs("#from").value,to=qs("#to").value;
- const rs=SIGRED.reservations.filter(r=>r.date>=from&&r.date<=to);
- const counts={PENDIENTE:0,CONFIRMADA:0,RECHAZADA:0,CANCELADA:0};
- rs.forEach(r=>counts[r.state]=(counts[r.state]||0)+1);
- qs("#kpis").innerHTML=[[""+rs.length,"Solicitudes"],[""+counts.CONFIRMADA,"Confirmadas"],[""+counts.RECHAZADA,"Rechazadas"],[""+SIGRED.blocks.filter(b=>b.date>=from&&b.date<=to).length,"Bloqueos"]].map(x=>`<div class="card kpi"><div class="num">${x[0]}</div><div class="label">${x[1]}</div></div>`).join("");
- qs("#report").innerHTML=SIGRED.spaces.map(s=>{const a=rs.filter(r=>r.spaceId===s.id);const hours=a.filter(r=>r.state==="CONFIRMADA").reduce((n,r)=>n+((new Date("1970-01-01T"+r.end)-new Date("1970-01-01T"+r.start))/3600000),0);return `<tr><td>${esc(s.name)}</td><td>${a.length}</td><td>${a.filter(r=>r.state==="CONFIRMADA").length}</td><td>${a.filter(r=>r.state==="RECHAZADA").length}</td><td>${a.filter(r=>r.state==="CANCELADA").length}</td><td>${hours.toFixed(1)}</td></tr>`}).join("");
- qs("#hist").innerHTML=rs.slice().sort((a,b)=>b.id-a.id).slice(0,20).map(r=>`<tr><td>#${r.id}</td><td>${esc(getSpace(r.spaceId).name)}</td><td>${esc(r.user)}</td><td>${formatDate(r.date)} ${r.start}</td><td>${statusBadge(r.state)}</td></tr>`).join("")||`<tr><td colspan="5" class="empty">Sin registros en el periodo.</td></tr>`;
-}
-qs("#filter").onclick=run;run();
-}
-</script>
+            function run() {
+                const from = qs("#from").value, to = qs("#to").value;
+                const rs = SIGRED.reservations.filter(r => r.date >= from && r.date <= to);
+                const counts = { PENDIENTE: 0, CONFIRMADA: 0, RECHAZADA: 0, CANCELADA: 0 };
+                rs.forEach(r => counts[r.state] = (counts[r.state] || 0) + 1);
+                qs("#kpis").innerHTML = [["" + rs.length, "Solicitudes"], ["" + counts.CONFIRMADA, "Confirmadas"], ["" + counts.RECHAZADA, "Rechazadas"], ["" + SIGRED.blocks.filter(b => b.date >= from && b.date <= to).length, "Bloqueos"]].map(x => `<div class="card kpi"><div class="num">${x[0]}</div><div class="label">${x[1]}</div></div>`).join("");
+                qs("#report").innerHTML = SIGRED.spaces.map(s => { const a = rs.filter(r => r.spaceId === s.id); const hours = a.filter(r => r.state === "CONFIRMADA").reduce((n, r) => n + ((new Date("1970-01-01T" + r.end) - new Date("1970-01-01T" + r.start)) / 3600000), 0); return `<tr><td>${esc(s.name)}</td><td>${a.length}</td><td>${a.filter(r => r.state === "CONFIRMADA").length}</td><td>${a.filter(r => r.state === "RECHAZADA").length}</td><td>${a.filter(r => r.state === "CANCELADA").length}</td><td>${hours.toFixed(1)}</td></tr>` }).join("");
+                qs("#hist").innerHTML = rs.slice().sort((a, b) => b.id - a.id).slice(0, 20).map(r => `<tr><td>#${r.id}</td><td>${esc(getSpace(r.spaceId).name)}</td><td>${esc(r.user)}</td><td>${formatDate(r.date)} ${r.start}</td><td>${statusBadge(r.state)}</td></tr>`).join("") || `<tr><td colspan="5" class="empty">Sin registros en el periodo.</td></tr>`;
+            }
+            qs("#filter").onclick = run; run();
+        }
+    </script>
 </body>
+
 </html>
