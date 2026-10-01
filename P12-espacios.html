@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P12-espacios</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth(true)){} else {
+shell("Gestión de espacios","P12",`
+<div class="grid grid-2"><div class="card"><h3>Nuevo / editar espacio</h3>
+<form id="spaceForm"><input type="hidden" id="id">
+<div class="form-grid">
+<div class="field"><label>Nombre</label><input id="name" required></div>
+<div class="field"><label>Capacidad</label><input id="capacity" type="number" min="1" required></div>
+<div class="field"><label>Ubicación</label><input id="location"></div>
+<div class="field"><label>Dimensiones</label><input id="dimensions"></div>
+<div class="field full"><label>Disciplinas (separadas por coma)</label><input id="disciplines"></div>
+<div class="field full"><label>Reglas de uso</label><textarea id="rules"></textarea></div>
+<div class="field"><label>Estado</label><select id="state"><option>DISPONIBLE</option><option>NO_DISPONIBLE</option><option>MANTENIMIENTO</option></select></div>
+</div><div class="actions" style="margin-top:15px"><button class="btn">Guardar</button><button class="btn secondary" type="button" onclick="resetForm()">Limpiar</button></div>
+</form></div>
+<div class="card"><h3>Espacios registrados</h3><div id="list"></div></div></div>`);
+function resetForm(){qs("#id").value="";qs("#spaceForm").reset();qs("#state").value="DISPONIBLE"}
+window.resetForm=resetForm;
+function render(){qs("#list").innerHTML=SIGRED.spaces.map(s=>`<div style="padding:12px 0;border-bottom:1px solid #e8ebef"><strong>${esc(s.name)}</strong><div class="meta">Capacidad: ${s.capacity} · Estado: ${statusBadge(s.state)}</div><button class="btn secondary small" onclick="editSpace(${s.id})" style="margin-top:7px">Editar</button></div>`).join("")}
+window.editSpace=id=>{const s=getSpace(id);["id","name","capacity","location","dimensions","rules","state"].forEach(k=>qs("#"+k).value=s[k]??"");qs("#disciplines").value=s.disciplines.join(",")};
+qs("#spaceForm").onsubmit=e=>{e.preventDefault();const id=+qs("#id").value;if(id){const s=getSpace(id);Object.assign(s,{name:qs("#name").value,capacity:+qs("#capacity").value,location:qs("#location").value,dimensions:qs("#dimensions").value,disciplines:qs("#disciplines").value.split(",").map(x=>x.trim()).filter(Boolean),rules:qs("#rules").value,state:qs("#state").value})}else{SIGRED.spaces.push({id:uid(),name:qs("#name").value,capacity:+qs("#capacity").value,location:qs("#location").value,dimensions:qs("#dimensions").value,disciplines:qs("#disciplines").value.split(",").map(x=>x.trim()).filter(Boolean),rules:qs("#rules").value,state:qs("#state").value,hours:"07:00 – 22:00"})}resetForm();render();toast("Espacio guardado")};render();
+}
+</script>
+</body>
+</html>

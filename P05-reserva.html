@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P05-reserva</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth()){} else {
+const p=new URLSearchParams(location.search), space=getSpace(p.get("space")||1);
+shell("Solicitud de reserva","P03",`
+<div class="space-layout">
+<div class="card">
+<div class="space-photo">Fotografía<br>del espacio</div>
+<h2>${esc(space.name)}</h2>
+<div class="meta">Dimensiones: ${esc(space.dimensions)}<br>Capacidad: ${space.capacity} personas<br>Disciplinas: ${esc(space.disciplines.join(", "))}<br>Horario: ${esc(space.hours)}</div>
+<div style="margin-top:12px"><a style="color:var(--blue);font-size:12px" href="P04-espacio.html?id=${space.id}">Ver reglas de uso</a></div>
+</div>
+<div class="card">
+<form id="reserveForm">
+<div class="form-grid">
+<div class="field"><label>Fecha</label><input id="date" type="date" value="${p.get("date")||todayISO()}" required></div>
+<div class="field"><label>Disciplina</label><select id="discipline">${space.disciplines.map(d=>`<option>${esc(d)}</option>`).join("")}</select></div>
+<div class="field"><label>Hora de inicio</label><input id="start" type="time" value="${p.get("start")||"16:00"} required></div>
+<div class="field"><label>Hora de fin</label><input id="end" type="time" value="${p.get("end")||"18:00"} required></div>
+<div class="field"><label>N.º de participantes</label><input id="participants" type="number" min="1" max="${space.capacity}" value="12" required></div>
+<div class="field"><label>Finalidad de uso</label><input id="purpose" maxlength="200" value="Entrenamiento" required></div>
+</div>
+<div id="validation" class="notice success" style="margin:18px 0">✓ Horario disponible. No se detectan cruces con otras reservas.</div>
+<div class="actions"><button class="btn" type="submit">Enviar solicitud</button><button type="button" class="btn secondary" onclick="location.href='P03-disponibilidad.html'">Cancelar</button></div>
+</form>
+</div></div>`);
+const form=qs("#reserveForm"), val=qs("#validation");
+function validate(){
+ const d=qs("#date").value,s=qs("#start").value,e=qs("#end").value,n=+qs("#participants").value;
+ let ok=true,msg="✓ Horario disponible. No se detectan cruces con otras reservas.";
+ if(!d||!s||!e||s>=e){ok=false;msg="El horario de inicio debe ser menor que el de fin."}
+ if(n>space.capacity){ok=false;msg="El número de participantes supera la capacidad del espacio."}
+ if(hasConflict(space.id,d,s,e)){ok=false;msg="El horario seleccionado presenta un cruce con otra reserva o bloqueo."}
+ val.className="notice "+(ok?"success":"error");val.textContent=msg;return ok;
+}
+["date","start","end","participants"].forEach(id=>qs("#"+id).addEventListener("input",validate));
+form.addEventListener("submit",e=>{
+ e.preventDefault(); if(!validate())return;
+ const r={id:uid(),user:SIGRED.current.email,spaceId:space.id,discipline:qs("#discipline").value,date:qs("#date").value,start:qs("#start").value,end:qs("#end").value,participants:+qs("#participants").value,purpose:qs("#purpose").value,state:"PENDIENTE",observation:"",createdAt:new Date().toISOString()};
+ SIGRED.reservations.push(r);saveData();location.href="P06-confirmacion.html?id="+r.id;
+});
+}
+</script>
+</body>
+</html>

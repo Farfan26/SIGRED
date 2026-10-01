@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P04-espacio</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth()){} else {
+const p=new URLSearchParams(location.search), space=getSpace(p.get("id")||1);
+shell("Detalle del espacio","P03",`
+<div class="space-layout">
+<div class="card">
+<div class="space-photo">Fotografía<br>del espacio</div>
+<h2>${esc(space.name)}</h2>
+<div class="meta">
+<strong>Dimensiones:</strong> ${esc(space.dimensions)}<br>
+<strong>Capacidad:</strong> ${space.capacity} personas<br>
+<strong>Ubicación:</strong> ${esc(space.location)}<br>
+<strong>Disciplinas:</strong> ${esc(space.disciplines.join(", "))}<br>
+<strong>Horario de atención:</strong> ${esc(space.hours)}
+</div>
+</div>
+<div class="card">
+<h3>Reglas de uso</h3><p>${esc(space.rules)}</p>
+<div class="notice info" style="margin:18px 0">Selecciona una franja libre en la consulta de disponibilidad para iniciar una solicitud.</div>
+<div class="actions"><button class="btn" onclick="location.href='P05-reserva.html?space=${space.id}&date=${p.get("date")||todayISO()}&start=${p.get("start")||"16:00"}&end=${p.get("end")||"18:00"}'">Solicitar este espacio</button><button class="btn secondary" onclick="location.href='P03-disponibilidad.html'">Volver</button></div>
+</div></div>`);
+}
+</script>
+</body>
+</html>

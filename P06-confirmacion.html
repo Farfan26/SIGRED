@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P06-confirmacion</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth()){} else {
+const id=new URLSearchParams(location.search).get("id"), r=SIGRED.reservations.find(x=>String(x.id)===String(id));
+shell("Confirmación de solicitud","P07",r?`
+<div class="card">
+<div class="notice success">✓ Solicitud enviada correctamente. Estado inicial: PENDIENTE.</div>
+<h3 style="margin-top:20px">Resumen de la solicitud</h3>
+<dl class="detail-list">
+<dt>Espacio</dt><dd>${esc(getSpace(r.spaceId).name)}</dd>
+<dt>Fecha</dt><dd>${formatDate(r.date)}</dd>
+<dt>Horario</dt><dd>${r.start} – ${r.end}</dd>
+<dt>Disciplina</dt><dd>${esc(r.discipline)}</dd>
+<dt>Participantes</dt><dd>${r.participants}</dd>
+<dt>Finalidad</dt><dd>${esc(r.purpose)}</dd>
+<dt>Estado</dt><dd>${statusBadge(r.state)}</dd>
+</dl>
+<div class="actions" style="margin-top:22px"><button class="btn" onclick="location.href='P07-mis-reservas.html'">Ver mis reservas</button><button class="btn secondary" onclick="location.href='P03-disponibilidad.html'">Volver a disponibilidad</button></div>
+</div>`:`<div class="card empty">No se encontró la solicitud.</div>`);
+}
+</script>
+</body>
+</html>

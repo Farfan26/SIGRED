@@ -1,0 +1,35 @@
+SIGRED - Google Sheets backend
+=================================
+
+Hojas sugeridas (fila 1 = encabezados):
+
+usuarios:
+id,correo,nombre,codigo,telefono,rol,estado
+
+espacios:
+id,nombre,capacidad,ubicacion,dimensiones,disciplinas,horario,reglas,estado
+
+reservas:
+id,usuario,espacio_id,disciplina,fecha,hora_inicio,hora_fin,participantes,finalidad,estado,observacion
+
+bloqueos:
+id,espacio_id,fecha,hora_inicio,hora_fin,tipo,motivo
+
+historial:
+id,reserva_id,usuario,estado_anterior,estado_nuevo,fecha_cambio,comentario
+
+notificaciones:
+id,usuario,reserva_id,asunto,mensaje,enviada,fecha_envio
+
+Pasos:
+1. Crea la hoja de cálculo.
+2. Crea las pestañas anteriores.
+3. Abre Extensiones > Apps Script.
+4. Pega backend_apps_script/Code.gs.
+5. Reemplaza SPREADSHEET_ID.
+6. Implementa como aplicación web.
+7. En el navegador, abre la consola y ejecuta:
+   localStorage.setItem("SIGRED_API_URL","URL_DEL_WEB_APP")
+8. Recarga el sistema.
+
+El frontend funciona sin backend como DEMO mediante localStorage.

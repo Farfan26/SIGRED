@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P11-solicitudes</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth(true)){} else {
+shell("Solicitudes pendientes","P11",`
+<div class="grid grid-3">
+<div class="card kpi"><div class="num" id="k1"></div><div class="label">Pendientes</div></div>
+<div class="card kpi"><div class="num" id="k2"></div><div class="label">Confirmadas</div></div>
+<div class="card kpi"><div class="num" id="k3"></div><div class="label">Rechazadas</div></div>
+</div>
+<div class="card" style="margin-top:18px"><div class="table-wrap"><table><thead><tr><th>Solicitante</th><th>Espacio</th><th>Fecha</th><th>Horario</th><th>Disciplina</th><th>Participantes</th><th>Acciones</th></tr></thead><tbody id="rows"></tbody></table></div></div>`);
+function render(){
+ const rs=SIGRED.reservations.filter(r=>r.state==="PENDIENTE");
+ qs("#k1").textContent=rs.length;qs("#k2").textContent=SIGRED.reservations.filter(r=>r.state==="CONFIRMADA").length;qs("#k3").textContent=SIGRED.reservations.filter(r=>r.state==="RECHAZADA").length;
+ qs("#rows").innerHTML=rs.length?rs.map(r=>`<tr><td>${esc(r.user)}</td><td>${esc(getSpace(r.spaceId).name)}</td><td>${formatDate(r.date)}</td><td>${r.start} – ${r.end}</td><td>${esc(r.discipline)}</td><td>${r.participants}</td><td><div class="actions"><button class="btn small" onclick="resolve(${r.id},'CONFIRMADA')">Aprobar</button><button class="btn danger small" onclick="resolve(${r.id},'RECHAZADA')">Rechazar</button></div></td></tr>`).join(""):`<tr><td colspan="7" class="empty">No hay solicitudes pendientes.</td></tr>`;
+}
+window.resolve=(id,state)=>{const r=SIGRED.reservations.find(x=>x.id===id); if(!r)return; if(state==="CONFIRMADA" && hasConflict(r.spaceId,r.date,r.start,r.end,r.id)){alert("No se puede aprobar: existe un cruce.");return} r.state=state;r.observation=state==="RECHAZADA"?"Solicitud rechazada por el administrador":"";saveData();render();toast("Solicitud actualizada")};render();
+}
+</script>
+</body>
+</html>

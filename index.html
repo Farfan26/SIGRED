@@ -1,39 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SIGRED - Reserva de espacios deportivos</title>
-  <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · index</title>
+<link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-  <!-- P01: INICIO DE SESIÓN -->
-  <section id="login" class="login-wrap">
-    <form id="f-login" class="card login">
-      <img id="logo" alt="Logo" height="70"> <!-- el logo se toma de js/config.js -->
-      <h1>SIGRED</h1><p class="sub">Gestión y Reserva de Espacios Deportivos</p>
-      <label>Correo institucional<input id="correo" type="email" placeholder="usuario@udep.edu.pe" required></label>
-      <label>Contraseña<input id="clave" type="password" required></label>
-      <button class="btn">Ingresar</button>
-      <p id="err" class="error"></p>
-      <div class="demo"><b>Cuentas de prueba</b> (clic para rellenar):<br>
-        <a href="#" data-u="estudiante@udep.edu.pe" data-p="Estudiante2026">Estudiante</a> ·
-        <a href="#" data-u="docente@udep.edu.pe" data-p="Docente2026">Docente</a> ·
-        <a href="#" data-u="admin@udep.edu.pe" data-p="Admin2026">Administrador</a></div>
-    </form>
-  </section>
-
-  <!-- APLICACIÓN (se muestra tras el login) -->
-  <section id="app" hidden>
-    <nav class="nav"><b id="brand">SIGRED</b><span id="menu"></span><span id="quien"></span><a href="#" id="salir">Salir</a></nav>
-    <main id="main"></main>
-  </section>
-
-  <!-- P05/P06: formulario de reserva (ventana emergente) -->
-  <dialog id="dlg"></dialog>
-  <div id="toast"></div>
-
-  <script src="js/config.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
+<script>location.href='P01-login.html'</script><noscript>Abra P01-login.html</noscript>
+<script src="assets/app.js"></script>
+<script></script>
 </body>
 </html>

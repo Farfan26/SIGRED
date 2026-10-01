@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P02-recuperar</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="login-page"><section class="login-card">
+<img class="login-logo" src="assets/logo-udep.png" alt="Logo UDEP">
+<h1 class="login-title">Recuperar contraseña</h1>
+<div class="login-sub">Restablecimiento mediante correo institucional</div>
+<form id="recoverForm">
+<div class="field"><label>Correo institucional</label><input id="email" type="email" placeholder="usuario@udep.edu.pe" required></div>
+<button class="btn">Enviar enlace de recuperación</button>
+</form>
+<div class="login-links"><a href="P01-login.html">Volver al inicio de sesión</a></div>
+</section></div>
+
+<script src="assets/app.js"></script>
+<script>
+qs("#recoverForm").addEventListener("submit",e=>{e.preventDefault();alert("Modo demo: se generaría el correo de recuperación para "+qs("#email").value);});
+</script>
+</body>
+</html>

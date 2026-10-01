@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P03-disponibilidad</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth()){} else {
+shell("Consulta de disponibilidad","P03",`
+<div class="card">
+<div class="toolbar">
+<div class="field"><label>Espacio deportivo</label><select id="space"></select></div>
+<div class="field compact"><label>Disciplina</label><select id="discipline"><option>Todas</option></select></div>
+<div class="field compact"><label>Semana del</label><input id="week" type="date"></div>
+<button class="btn" id="search">Buscar</button>
+</div>
+<div id="calendar"></div>
+<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn small" onclick="location.href='P05-reserva.html'">Reservar horario libre</button></div>
+</div>`);
+const sp=qs("#space"), di=qs("#discipline"), wk=qs("#week");
+sp.innerHTML=SIGRED.spaces.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
+function fillDisc(){const s=getSpace(sp.value);di.innerHTML='<option>Todas</option>'+s.disciplines.map(x=>`<option>${esc(x)}</option>`).join("")}
+function render(){qs("#calendar").innerHTML=renderCalendar(sp.value,mondayOf(wk.value))}
+sp.addEventListener("change",()=>{fillDisc();render()});qs("#search").onclick=render;
+wk.value=mondayOf(todayISO());fillDisc();render();
+}
+</script>
+</body>
+</html>

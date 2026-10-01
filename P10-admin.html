@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SIGRED · P10-admin</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="assets/app.js"></script>
+<script>
+if(!requireAuth(true)){} else {
+const pending=SIGRED.reservations.filter(r=>r.state==="PENDIENTE").length;
+shell("Panel de administración","P10",`
+<div class="hero-admin"><div><p class="page-subtitle">Resumen operativo del Área de Deportes</p></div><button class="btn" onclick="location.href='P11-solicitudes.html'">Revisar solicitudes</button></div>
+<div class="grid grid-4">
+<div class="card kpi"><div class="num">${pending}</div><div class="label">Solicitudes pendientes</div></div>
+<div class="card kpi"><div class="num">${SIGRED.spaces.length}</div><div class="label">Espacios registrados</div></div>
+<div class="card kpi"><div class="num">${SIGRED.reservations.filter(r=>r.state==="CONFIRMADA").length}</div><div class="label">Reservas confirmadas</div></div>
+<div class="card kpi"><div class="num">${SIGRED.blocks.length}</div><div class="label">Bloqueos registrados</div></div>
+</div>
+<div class="quick-links" style="margin-top:18px">
+<a class="quick-link" href="P11-solicitudes.html"><strong>P11 · Solicitudes pendientes</strong><span>Aprobar o rechazar solicitudes.</span></a>
+<a class="quick-link" href="P12-espacios.html"><strong>P12 · Gestión de espacios</strong><span>Editar estado y configuración.</span></a>
+<a class="quick-link" href="P13-bloqueos.html"><strong>P13 · Bloqueos de horario</strong><span>Registrar mantenimiento o actividades.</span></a>
+<a class="quick-link" href="P14-reportes.html"><strong>P14 · Historial y reportes</strong><span>Consultar trazabilidad y uso.</span></a>
+</div>`);
+}
+</script>
+</body>
+</html>
