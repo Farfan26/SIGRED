@@ -121,75 +121,7 @@
     $("#logoutBtn").onclick=()=>{API.clearSession();location.href="P01-login.html"};
 
     // Menú móvil accesible: abre como panel flotante y se cierra al navegar o tocar fuera.
-    const mobileToggle = $("#mobileToggle");
-const mainNav = $("#mainNav");
-
-mobileToggle.onclick = () => {
-
-  const abierto =
-    mainNav.classList.toggle("open");
-
-  // Cambia ☰ por ×
-  mobileToggle.textContent =
-    abierto ? "×" : "☰";
-
-  mobileToggle.setAttribute(
-    "aria-label",
-    abierto
-      ? "Cerrar menú"
-      : "Abrir menú"
-  );
-  $$("#mainNav a").forEach(link => {
-
-  link.addEventListener(
-    "click",
-    () => {
-
-      mainNav.classList.remove("open");
-
-      mobileToggle.textContent = "☰";
-
-      mobileToggle.setAttribute(
-        "aria-label",
-        "Abrir menú"
-      );
-    }
-  );
-
-});
-document.addEventListener(
-  "click",
-  e => {
-
-    if (
-      !mainNav.classList.contains("open")
-    ) {
-      return;
-    }
-
-    const clicEnMenu =
-      mainNav.contains(e.target);
-
-    const clicEnBoton =
-      mobileToggle.contains(e.target);
-
-    if (
-      !clicEnMenu &&
-      !clicEnBoton
-    ) {
-
-      mainNav.classList.remove("open");
-
-      mobileToggle.textContent = "☰";
-
-      mobileToggle.setAttribute(
-        "aria-label",
-        "Abrir menú"
-      );
-    }
-  }
-);
-};;
+    const nav=$("#mainNav"),toggle=$("#mobileToggle"),scrim=$("#navScrim");
     const setMenu=(open)=>{nav.classList.toggle("open",open);scrim.classList.toggle("show",open);document.body.classList.toggle("nav-open",open);toggle.setAttribute("aria-expanded",open?"true":"false");toggle.textContent=open?"×":"☰"};
     toggle.onclick=()=>setMenu(!nav.classList.contains("open"));
     scrim.onclick=()=>setMenu(false);
