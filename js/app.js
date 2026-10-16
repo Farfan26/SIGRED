@@ -158,7 +158,7 @@
       <form id="loginForm" class="grid" style="gap:15px"><div class="field"><label>Correo institucional</label><input id="email" type="email" autocomplete="username" placeholder="usuario@udep.edu.pe" required></div>${passwordField("password")}
       <label class="small" style="display:flex;align-items:center;gap:8px;color:var(--muted)"><input id="remember" type="checkbox" checked style="width:auto;min-height:auto"> Mantener sesión en este equipo</label><button class="btn block" id="loginBtn">Ingresar al sistema</button></form>
       <div class="auth-links"><a href="P02-recuperar.html">¿Olvidaste tu contraseña?</a><a href="P00-crear-cuenta.html">Crear cuenta</a></div>
-      <details class="demo-credentials"><summary>Credenciales de demostración</summary><table>${API.demoCredentials.map(x=>`<tr><td><b>${x[0]}</b></td><td><code>${x[1]}</code></td><td><code>${x[2]}</code></td></tr>`).join("")}</table><div class="small muted mt-1">Modo actual: <b>${API.mode()}</b></div></details>`,{title:"Tu espacio, en un clic.",text:"SIGRED transforma la gestión manual de reservas en un flujo digital con calendario, validación y seguimiento de solicitudes."});
+      `,{title:"Tu espacio, en un clic.",text:"SIGRED transforma la gestión manual de reservas en un flujo digital con calendario, validación y seguimiento de solicitudes."});
     bindEyes();
     $("#loginForm").onsubmit=async e=>{e.preventDefault();const b=$("#loginBtn");setBusy(b,true,"Validando…");try{const r=await API.call("login",{email:$("#email").value,password:$("#password").value});API.setSession(r.token,r.user,$("#remember").checked);location.href=r.user.role==="ADMIN_DEPORTES"?"P10-admin.html":"P03-disponibilidad.html"}catch(err){toast(err.message,"error")}finally{setBusy(b,false)}};
   }
