@@ -1,0 +1,31 @@
+SIGRED - CREDENCIALES DE PRUEBA
+================================
+
+MODO DEMO LOCAL (sin Google Sheets)
+-----------------------------------
+Estudiante
+  Correo: estudiante@udep.edu.pe
+  Clave:  123456
+
+Docente
+  Correo: docente@udep.edu.pe
+  Clave:  123456
+
+Administrativo
+  Correo: administrativo@udep.edu.pe
+  Clave:  123456
+
+Administrador
+  Correo: admin@udep.edu.pe
+  Clave:  admin123
+
+BACKEND GOOGLE SHEETS (después de ejecutar setupSIGRED)
+------------------------------------------------------
+Administrador inicial
+  Correo: admin@udep.edu.pe
+  Clave:  SigredAdmin2026!
+
+IMPORTANTE:
+- Cambia la contraseña del administrador después del primer ingreso.
+- Las cuentas de estudiante/docente/administrativo se pueden crear desde P00-crear-cuenta.html.
+- No uses estas credenciales predeterminadas como credenciales reales de producción.
