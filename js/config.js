@@ -11,7 +11,7 @@
  * 3) CALENDAR_START_HOUR / CALENDAR_END_HOUR: rango visual del calendario.
  */
 window.SIGRED_CONFIG = {
-  API_URL: "",
+  API_URL: "https://script.google.com/macros/s/AKfycbxXn8ThSnT3uH9K_RhQH9j0YxKuhyPKaurkppWggwZvfHYKtxpwodZ7cQJGuNHExVQBEw/exec",
   APP_NAME: "SIGRED",
   INSTITUTION: "Universidad de Piura",
   CAMPUS: "Campus Piura",
